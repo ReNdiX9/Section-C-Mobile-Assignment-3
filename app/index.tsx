@@ -41,10 +41,10 @@ export default function Index() {
     }
   };
   //test if key works correct
-  console.log(
+  /*console.log(
     "API Key from ENV:" + process.env.EXPO_PUBLIC_API_KEY,
     "\nAUTH_DOMAIN:" + process.env.EXPO_PUBLIC_AUTH_DOMAIN
-  );
+  );*/
   return (
     <View style={styles.container}>
       {currentScreen !== "home" && (
