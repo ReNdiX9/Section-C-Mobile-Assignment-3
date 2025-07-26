@@ -1,19 +1,15 @@
 import { MaterialIcons } from "@expo/vector-icons";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as Yup from "yup";
+import { auth } from "../firebaseConfig";
 
 const SignUpSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, "Name must be at least 2 characters")
-    .required("Name is required"),
-  email: Yup.string()
-    .email("Invalid email format")
-    .required("Email is required"),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
+  name: Yup.string().min(2, "Name must be at least 2 characters").required("Name is required"),
+  email: Yup.string().email("Invalid email format").required("Email is required"),
+  password: Yup.string().min(8, "Password must be at least 8 characters").required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Confirm Password is required"),
@@ -22,6 +18,16 @@ const SignUpSchema = Yup.object().shape({
 const SignUp = ({ onNavigate }: { onNavigate: (screen: string) => void }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  //firebase  sign up handler function
+  const handleSignUp = async (values: { email: string; password: string }) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+      console.log("User created:", userCredential.user.email); //check if created
+    } catch (error) {
+      console.log("Sign-up error occurred:", error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -34,8 +40,9 @@ const SignUp = ({ onNavigate }: { onNavigate: (screen: string) => void }) => {
           confirmPassword: "",
         }}
         validationSchema={SignUpSchema}
-        onSubmit={(values, { resetForm }) => {
+        onSubmit={async (values, { resetForm }) => {
           console.dir(JSON.stringify(values, null, 2));
+          await handleSignUp(values);
           alert("Sign up successful!");
           resetForm();
         }}
@@ -83,15 +90,8 @@ const SignUp = ({ onNavigate }: { onNavigate: (screen: string) => void }) => {
                 secureTextEntry={!showPassword}
                 autoCapitalize="none"
               />
-              <TouchableOpacity
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.eyeIcon}
-              >
-                <MaterialIcons 
-                  name={showPassword ? "visibility" : "visibility-off"} 
-                  size={20} 
-                  color="gray" 
-                />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+                <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={20} color="gray" />
               </TouchableOpacity>
             </View>
             {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
@@ -108,15 +108,8 @@ const SignUp = ({ onNavigate }: { onNavigate: (screen: string) => void }) => {
                 secureTextEntry={!showConfirmPassword}
                 autoCapitalize="none"
               />
-              <TouchableOpacity
-                onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                style={styles.eyeIcon}
-              >
-                <MaterialIcons 
-                  name={showConfirmPassword ? "visibility" : "visibility-off"} 
-                  size={20} 
-                  color="gray" 
-                />
+              <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={styles.eyeIcon}>
+                <MaterialIcons name={showConfirmPassword ? "visibility" : "visibility-off"} size={20} color="gray" />
               </TouchableOpacity>
             </View>
             {touched.confirmPassword && errors.confirmPassword && (
@@ -217,5 +210,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
   },
-  
 });

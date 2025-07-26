@@ -21,27 +21,18 @@ export default function Index() {
           <View style={styles.homeContainer}>
             <Text style={styles.homeTitle}>Welcome to the App</Text>
             <Text style={styles.homeSubtitle}>Choose an option below</Text>
-            
-            <TouchableOpacity
-              style={styles.navButton}
-              onPress={() => setCurrentScreen("employee")}
-            >
+
+            <TouchableOpacity style={styles.navButton} onPress={() => setCurrentScreen("employee")}>
               <MaterialIcons name="person" size={24} color="white" />
               <Text style={styles.navButtonText}>Employee Information</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.navButton}
-              onPress={() => setCurrentScreen("signup")}
-            >
+            <TouchableOpacity style={styles.navButton} onPress={() => setCurrentScreen("signup")}>
               <MaterialIcons name="person-add" size={24} color="white" />
               <Text style={styles.navButtonText}>Sign Up</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.navButton}
-              onPress={() => setCurrentScreen("signin")}
-            >
+            <TouchableOpacity style={styles.navButton} onPress={() => setCurrentScreen("signin")}>
               <MaterialIcons name="login" size={24} color="white" />
               <Text style={styles.navButtonText}>Sign In</Text>
             </TouchableOpacity>
@@ -49,24 +40,23 @@ export default function Index() {
         );
     }
   };
-
+  //test if key works correct
+  console.log(
+    "API Key from ENV:" + process.env.EXPO_PUBLIC_API_KEY,
+    "\nAUTH_DOMAIN:" + process.env.EXPO_PUBLIC_AUTH_DOMAIN
+  );
   return (
     <View style={styles.container}>
       {currentScreen !== "home" && (
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => setCurrentScreen("home")}
-          >
+          <TouchableOpacity style={styles.backButton} onPress={() => setCurrentScreen("home")}>
             <MaterialIcons name="arrow-back" size={24} color="#4287f5" />
             <Text style={styles.backButtonText}>Back to Home</Text>
           </TouchableOpacity>
         </View>
       )}
-      
-      <View style={styles.content}>
-        {renderContent()}
-      </View>
+
+      <View style={styles.content}>{renderContent()}</View>
     </View>
   );
 }

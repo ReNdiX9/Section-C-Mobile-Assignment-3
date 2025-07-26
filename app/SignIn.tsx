@@ -1,20 +1,30 @@
 import { MaterialIcons } from "@expo/vector-icons";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as Yup from "yup";
+import { auth } from "../firebaseConfig";
 
 const SignInSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email format")
-    .required("Email is required"),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
+  email: Yup.string().email("Invalid email format").required("Email is required"),
+  password: Yup.string().min(8, "Password must be at least 8 characters").required("Password is required"),
 });
 
 const SignIn = ({ onNavigate }: { onNavigate: (screen: string) => void }) => {
   const [showPassword, setShowPassword] = useState(false);
+
+  //firebase handler sign-in function
+  const handleSignIn = async (values: { email: string; password: string }) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+      alert(`Welcome, ${userCredential.user.email}`);
+      console.log(" Signed in as:", userCredential.user.email);
+    } catch (error) {
+      console.error(" Sign-in error:", error);
+      alert(`Error: ${(error as Error).message}`);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -25,9 +35,9 @@ const SignIn = ({ onNavigate }: { onNavigate: (screen: string) => void }) => {
           password: "",
         }}
         validationSchema={SignInSchema}
-        onSubmit={(values, { resetForm }) => {
+        onSubmit={async (values, { resetForm }) => {
           console.dir(JSON.stringify(values, null, 2));
-          alert("Sign in successful!");
+          await handleSignIn(values);
           resetForm();
         }}
       >
@@ -60,15 +70,8 @@ const SignIn = ({ onNavigate }: { onNavigate: (screen: string) => void }) => {
                 secureTextEntry={!showPassword}
                 autoCapitalize="none"
               />
-              <TouchableOpacity
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.eyeIcon}
-              >
-                <MaterialIcons 
-                  name={showPassword ? "visibility" : "visibility-off"} 
-                  size={20} 
-                  color="gray" 
-                />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+                <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={20} color="gray" />
               </TouchableOpacity>
             </View>
             {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
