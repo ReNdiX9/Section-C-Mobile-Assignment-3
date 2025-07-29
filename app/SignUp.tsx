@@ -1,3 +1,4 @@
+//SignUp.tsx
 import { MaterialIcons } from "@expo/vector-icons";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
@@ -30,107 +31,109 @@ const SignUp = ({ onNavigate }: { onNavigate: (screen: string) => void }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign Up</Text>
-      <Formik
-        initialValues={{
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        }}
-        validationSchema={SignUpSchema}
-        onSubmit={async (values, { resetForm }) => {
-          console.dir(JSON.stringify(values, null, 2));
-          await handleSignUp(values);
-          alert("Sign up successful!");
-          resetForm();
-        }}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-          <>
-            {/* Name */}
-            <View style={styles.inputContainer}>
-              <MaterialIcons name="person" size={20} color="gray" />
-              <TextInput
-                style={styles.input}
-                placeholder="Name"
-                onChangeText={handleChange("name")}
-                onBlur={handleBlur("name")}
-                value={values.name}
-                autoCapitalize="words"
-              />
-            </View>
-            {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>}
+    <View style={styles.screen}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Sign Up</Text>
+        <Formik
+          initialValues={{
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+          }}
+          validationSchema={SignUpSchema}
+          onSubmit={async (values, { resetForm }) => {
+            console.dir(JSON.stringify(values, null, 2));
+            await handleSignUp(values);
+            alert("Sign up successful!");
+            resetForm();
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+            <>
+              {/* Name */}
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="person" size={20} color="gray" />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Name"
+                  onChangeText={handleChange("name")}
+                  onBlur={handleBlur("name")}
+                  value={values.name}
+                  autoCapitalize="words"
+                />
+              </View>
+              {touched.name && errors.name && <Text style={styles.error}>{errors.name}</Text>}
 
-            {/* Email */}
-            <View style={styles.inputContainer}>
-              <MaterialIcons name="email" size={20} color="gray" />
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                value={values.email}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </View>
-            {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
+              {/* Email */}
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="email" size={20} color="gray" />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  value={values.email}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              </View>
+              {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
-            {/* Password */}
-            <View style={styles.inputContainer}>
-              <MaterialIcons name="lock" size={20} color="gray" />
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                value={values.password}
-                secureTextEntry={!showPassword}
-                autoCapitalize="none"
-              />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={20} color="gray" />
-              </TouchableOpacity>
-            </View>
-            {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
+              {/* Password */}
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="lock" size={20} color="gray" />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Password"
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  value={values.password}
+                  secureTextEntry={!showPassword}
+                  autoCapitalize="none"
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+                  <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={20} color="gray" />
+                </TouchableOpacity>
+              </View>
+              {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
 
-            {/* Confirm Password */}
-            <View style={styles.inputContainer}>
-              <MaterialIcons name="lock" size={20} color="gray" />
-              <TextInput
-                style={styles.input}
-                placeholder="Confirm Password"
-                onChangeText={handleChange("confirmPassword")}
-                onBlur={handleBlur("confirmPassword")}
-                value={values.confirmPassword}
-                secureTextEntry={!showConfirmPassword}
-                autoCapitalize="none"
-              />
-              <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={styles.eyeIcon}>
-                <MaterialIcons name={showConfirmPassword ? "visibility" : "visibility-off"} size={20} color="gray" />
-              </TouchableOpacity>
-            </View>
-            {touched.confirmPassword && errors.confirmPassword && (
-              <Text style={styles.error}>{errors.confirmPassword}</Text>
-            )}
+              {/* Confirm Password */}
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="lock" size={20} color="gray" />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Confirm Password"
+                  onChangeText={handleChange("confirmPassword")}
+                  onBlur={handleBlur("confirmPassword")}
+                  value={values.confirmPassword}
+                  secureTextEntry={!showConfirmPassword}
+                  autoCapitalize="none"
+                />
+                <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} style={styles.eyeIcon}>
+                  <MaterialIcons name={showConfirmPassword ? "visibility" : "visibility-off"} size={20} color="gray" />
+                </TouchableOpacity>
+              </View>
+              {touched.confirmPassword && errors.confirmPassword && (
+                <Text style={styles.error}>{errors.confirmPassword}</Text>
+              )}
 
-            <View style={{ alignItems: "center", marginTop: 12 }}>
-              <TouchableOpacity style={styles.btn} onPress={() => handleSubmit()}>
-                <Text style={styles.btnText}>Sign Up</Text>
-              </TouchableOpacity>
-            </View>
+              <View style={{ alignItems: "center", marginTop: 12 }}>
+                <TouchableOpacity style={styles.btn} onPress={() => handleSubmit()}>
+                  <Text style={styles.btnText}>Sign Up</Text>
+                </TouchableOpacity>
+              </View>
 
-            <View style={styles.linkContainer}>
-              <Text style={styles.linkText}>Already have an account? </Text>
-              <TouchableOpacity onPress={() => onNavigate("signin")}>
-                <Text style={styles.link}>Sign In</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
-      </Formik>
+              <View style={styles.linkContainer}>
+                <Text style={styles.linkText}>Already have an account? </Text>
+                <TouchableOpacity onPress={() => onNavigate("signin")}>
+                  <Text style={styles.link}>Sign In</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+        </Formik>
+      </View>
     </View>
   );
 };
@@ -138,6 +141,12 @@ const SignUp = ({ onNavigate }: { onNavigate: (screen: string) => void }) => {
 export default SignUp;
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+  },
   container: {
     width: 400,
     padding: 24,
