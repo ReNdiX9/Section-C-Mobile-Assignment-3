@@ -1,3 +1,4 @@
+//SignIn.tsx
 import { MaterialIcons } from "@expo/vector-icons";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
@@ -27,70 +28,72 @@ const SignIn = ({ onNavigate }: { onNavigate: (screen: string) => void }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign In</Text>
-      <Formik
-        initialValues={{
-          email: "",
-          password: "",
-        }}
-        validationSchema={SignInSchema}
-        onSubmit={async (values, { resetForm }) => {
-          console.dir(JSON.stringify(values, null, 2));
-          await handleSignIn(values);
-          resetForm();
-        }}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-          <>
-            {/* Email */}
-            <View style={styles.inputContainer}>
-              <MaterialIcons name="email" size={20} color="gray" />
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                value={values.email}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </View>
-            {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
+    <View style={styles.screen}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Sign In</Text>
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          validationSchema={SignInSchema}
+          onSubmit={async (values, { resetForm }) => {
+            console.dir(JSON.stringify(values, null, 2));
+            await handleSignIn(values);
+            resetForm();
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+            <>
+              {/* Email */}
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="email" size={20} color="gray" />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  value={values.email}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              </View>
+              {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
 
-            {/* Password */}
-            <View style={styles.inputContainer}>
-              <MaterialIcons name="lock" size={20} color="gray" />
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                value={values.password}
-                secureTextEntry={!showPassword}
-                autoCapitalize="none"
-              />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
-                <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={20} color="gray" />
-              </TouchableOpacity>
-            </View>
-            {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
+              {/* Password */}
+              <View style={styles.inputContainer}>
+                <MaterialIcons name="lock" size={20} color="gray" />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Password"
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  value={values.password}
+                  secureTextEntry={!showPassword}
+                  autoCapitalize="none"
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+                  <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={20} color="gray" />
+                </TouchableOpacity>
+              </View>
+              {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
 
-            <View style={{ alignItems: "center", marginTop: 12 }}>
-              <TouchableOpacity style={styles.btn} onPress={() => handleSubmit()}>
-                <Text style={styles.btnText}>Sign In</Text>
-              </TouchableOpacity>
-            </View>
+              <View style={{ alignItems: "center", marginTop: 12 }}>
+                <TouchableOpacity style={styles.btn} onPress={() => handleSubmit()}>
+                  <Text style={styles.btnText}>Sign In</Text>
+                </TouchableOpacity>
+              </View>
 
-            <View style={styles.linkContainer}>
-              <Text style={styles.linkText}>Don't have an account? </Text>
-              <TouchableOpacity onPress={() => onNavigate("signup")}>
-                <Text style={styles.link}>Sign Up</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
-      </Formik>
+              <View style={styles.linkContainer}>
+                <Text style={styles.linkText}>Don't have an account? </Text>
+                <TouchableOpacity onPress={() => onNavigate("signup")}>
+                  <Text style={styles.link}>Sign Up</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+        </Formik>
+      </View>
     </View>
   );
 };
@@ -98,6 +101,12 @@ const SignIn = ({ onNavigate }: { onNavigate: (screen: string) => void }) => {
 export default SignIn;
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+  },
   container: {
     width: 400,
     padding: 24,
